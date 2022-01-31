@@ -4,28 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gb.stopwatch.data.TimestampProvider
-import com.gb.stopwatch.data.TimestampProviderImpl
-import com.gb.stopwatch.stopwatch.*
-import com.gb.stopwatch.view.ElapsedTimeCalculator
+import com.gb.stopwatch.stopwatch.StopwatchListOrchestrator
+import com.gb.stopwatch.stopwatch.StopwatchListOrchestratorImpl
 import kotlinx.coroutines.launch
 
-
-internal class MainViewModel(
-    private var timestampProvider: TimestampProvider = TimestampProviderImpl()
-) : ViewModel() {
+internal class MainViewModel : ViewModel() {
 
     private val _textLiveData: MutableLiveData<String> = MutableLiveData()
     val textLiveData: LiveData<String> get() = _textLiveData
 
-    private val stopwatchListOrchestrator : StopwatchListOrchestrator = StopwatchListOrchestratorImpl(
-        StopwatchStateHolder(
-            StopwatchStateCalculator(timestampProvider, ElapsedTimeCalculator(timestampProvider)),
-            ElapsedTimeCalculator(timestampProvider),
-            TimestampMillisecondsFormatter()
-        ),
-        viewModelScope
-    )
+    private val stopwatchListOrchestrator: StopwatchListOrchestrator =
+        StopwatchListOrchestratorImpl(viewModelScope)
 
     init {
         viewModelScope.launch {

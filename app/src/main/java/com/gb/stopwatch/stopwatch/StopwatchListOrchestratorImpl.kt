@@ -3,11 +3,15 @@ package com.gb.stopwatch.stopwatch
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+
 
 class StopwatchListOrchestratorImpl(
-    private val stopwatchStateHolder: StopwatchStateHolder,
-    private val scope: CoroutineScope,
-) : StopwatchListOrchestrator {
+    private val scope: CoroutineScope
+) : StopwatchListOrchestrator, KoinComponent {
+
+    private val stopwatchStateHolder: StopwatchStateHolder = get()
 
     private val mutableTicker = MutableStateFlow("")
     override val ticker: StateFlow<String> = mutableTicker
