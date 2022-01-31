@@ -3,18 +3,17 @@ package com.gb.stopwatch.stopwatch
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.get
+import kotlinx.coroutines.flow.asStateFlow
 
 
 class StopwatchListOrchestratorImpl(
-    private val scope: CoroutineScope
-) : StopwatchListOrchestrator, KoinComponent {
+    private val stopwatchStateHolder: StopwatchStateHolder
+) : StopwatchListOrchestrator {
 
-    private val stopwatchStateHolder: StopwatchStateHolder = get()
+    private val _ticker = MutableStateFlow("")
+    override val ticker: StateFlow<String> = _ticker.asStateFlow()
 
-    private val mutableTicker = MutableStateFlow("")
-    override val ticker: StateFlow<String> = mutableTicker
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     private var job: Job? = null
 
@@ -26,7 +25,7 @@ class StopwatchListOrchestratorImpl(
     private fun startJob() {
         scope.launch {
             while (isActive) {
-                mutableTicker.value = stopwatchStateHolder.getStringTimeRepresentation()
+                _ticker.value = stopwatchStateHolder.getStringTimeRepresentation()
                 delay(20)
             }
         }
@@ -49,6 +48,6 @@ class StopwatchListOrchestratorImpl(
     }
 
     private fun clearValue() {
-        mutableTicker.value = "00:00:000"
+        _ticker.value = "00:00:000"
     }
 }

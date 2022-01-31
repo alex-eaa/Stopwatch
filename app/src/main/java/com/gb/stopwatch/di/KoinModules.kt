@@ -16,6 +16,7 @@ val application = module {
     factory { ElapsedTimeCalculator(get()) }
     factory { StopwatchStateCalculator(get(), get()) }
     factory { StopwatchStateHolder(get(), get(), get()) }
+    factory<StopwatchListOrchestrator> { StopwatchListOrchestratorImpl(get()) }
 
-    viewModel { MainViewModel() }
+    viewModel { MainViewModel(get()) }
 }

@@ -5,16 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gb.stopwatch.stopwatch.StopwatchListOrchestrator
-import com.gb.stopwatch.stopwatch.StopwatchListOrchestratorImpl
 import kotlinx.coroutines.launch
 
-internal class MainViewModel : ViewModel() {
+internal class MainViewModel(
+    private val stopwatchListOrchestrator: StopwatchListOrchestrator
+) : ViewModel() {
 
     private val _textLiveData: MutableLiveData<String> = MutableLiveData()
     val textLiveData: LiveData<String> get() = _textLiveData
-
-    private val stopwatchListOrchestrator: StopwatchListOrchestrator =
-        StopwatchListOrchestratorImpl(viewModelScope)
 
     init {
         viewModelScope.launch {
@@ -27,4 +25,9 @@ internal class MainViewModel : ViewModel() {
     fun start() = stopwatchListOrchestrator.start()
     fun pause() = stopwatchListOrchestrator.pause()
     fun stop() = stopwatchListOrchestrator.stop()
+
+    override fun onCleared() {
+        stop()
+        super.onCleared()
+    }
 }
