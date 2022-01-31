@@ -8,4 +8,5 @@ interface StopwatchListOrchestrator {
     fun start()
     fun pause()
     fun stop()
+    fun destroy()
 }
