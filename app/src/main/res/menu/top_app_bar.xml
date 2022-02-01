@@ -8,10 +8,4 @@
         android:orderInCategory="1"
         android:title="Удалить последний"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/action_delete"
-        android:icon="@drawable/ic_baseline_delete_24"
-        android:orderInCategory="2"
-        android:title="Добавить"
-        app:showAsAction="always"/>
 </menu>

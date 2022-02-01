@@ -1,7 +1,6 @@
 package com.gb.stopwatch.stopwatch
 
 import com.gb.stopwatch.data.TimestampProvider
-import com.gb.stopwatch.stopwatch.StopwatchState
 
 class ElapsedTimeCalculator(private val timestampProvider: TimestampProvider) {
 

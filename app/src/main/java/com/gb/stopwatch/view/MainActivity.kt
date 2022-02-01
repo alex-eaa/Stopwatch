@@ -1,7 +1,6 @@
 package com.gb.stopwatch.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +11,7 @@ import com.gb.stopwatch.viewmodel.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainAdapter.ItemOnClickListener {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -26,11 +25,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (adapter == null) {
-            adapter = MainAdapter(viewModel.listStopwatch, this)
+            adapter = MainAdapter(viewModel.listStopwatch, this, this)
             binding.recyclerview.adapter = adapter
         }
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.top_app_bar, menu)
@@ -40,17 +38,17 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_add -> {
-                viewModel.addStopwatch()
-                adapter?.setData(viewModel.listStopwatch)
-                true
-            }
-            R.id.action_delete -> {
-                viewModel.deleteStopwatch()
-                adapter?.setData(viewModel.listStopwatch)
+                val index = viewModel.insertStopwatch()
+                adapter?.notifyItemInserted(index)
                 true
             }
             else -> true
         }
+    }
+
+    override fun clickButtonRemove(position: Int) {
+        viewModel.removeStopwatchByIndex(position)
+        adapter?.notifyItemRemoved(position)
     }
 }
 

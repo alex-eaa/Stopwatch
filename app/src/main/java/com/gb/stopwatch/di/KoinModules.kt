@@ -12,8 +12,8 @@ import org.koin.dsl.module
 val application = module {
     single<TimestampProvider> { TimestampProviderImpl() }
 
-    factory { TimestampMillisecondsFormatter() }
-    factory { ElapsedTimeCalculator(get()) }
+    single { TimestampMillisecondsFormatter() }
+    single { ElapsedTimeCalculator(get()) }
     factory { StopwatchStateCalculator(get(), get()) }
     factory { StopwatchStateHolder(get(), get(), get()) }
     factory<StopwatchListOrchestrator> { StopwatchListOrchestratorImpl(get()) }

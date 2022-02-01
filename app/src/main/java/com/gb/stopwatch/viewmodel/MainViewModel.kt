@@ -5,22 +5,23 @@ import org.koin.core.component.KoinComponent
 
 internal class MainViewModel : ViewModel(), KoinComponent {
 
-    val listStopwatch: ArrayList<Stopwatch> = arrayListOf(Stopwatch())
+    private val _listStopwatch: MutableList<Stopwatch> = arrayListOf(Stopwatch())
+    val listStopwatch: List<Stopwatch> get() = _listStopwatch
 
-    fun addStopwatch() {
-        listStopwatch.add(Stopwatch())
+    fun insertStopwatch(): Int {
+        _listStopwatch.add(Stopwatch())
+        return _listStopwatch.size - 1
     }
 
-    fun deleteStopwatch() {
-        if (listStopwatch.size > 1) {
-            val index = listStopwatch.size - 1
-            listStopwatch[index].destroy()
-            listStopwatch.removeAt(index)
+    fun removeStopwatchByIndex(index: Int) {
+        if (index < _listStopwatch.size && _listStopwatch.size > 1) {
+            _listStopwatch[index].destroy()
+            _listStopwatch.removeAt(index)
         }
     }
 
     override fun onCleared() {
-        listStopwatch.forEach { it.destroy() }
+        _listStopwatch.forEach { it.destroy() }
         super.onCleared()
     }
 }
